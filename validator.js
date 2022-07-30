@@ -165,35 +165,36 @@ function Validator(formSelector, options){
         
         // Khi không có lỗi thì sumbit form
         if (isValid) {
-            if(typeof options.onSubmit === 'function') {var enableInputs = formElement.querySelectorAll('[name]')
-            // console.log(Array.from(enableInputs))
-            // Array.from() convert thành 1 array, trả về các thẻ input chứa thuộc tính name
-            var formValues = Array.from(enableInputs).reduce(function(values,input){
-                switch(input.type) {
-                    case'radio':
-                    // checked là pseudo class
-                        values[input.name] = formElement.querySelector('input[name="' + input.name +  '"]:checked').value   
-                        break;                              
-                    case'checkbox':
-                        if(!input.matches(':checked') && !values[input.name]){
-                            values[input.name] = ''
-                        }
-                        if(!input.matches(':checked')){
-                            return values;
-                        } 
-                        if(!Array.isArray(values[input.name])) {
-                            values[input.name] = []
-                        }
-                        values[input.name].push(input.value)
-                        break
-                    case 'file':
-                        values[input.name] = input.files;
-                        break
-                    default:
-                        values[input.name] = input.value 
-                }
-                console.log(values)
-                return values
+            if(typeof options.onSubmit === 'function') {
+                var enableInputs = formElement.querySelectorAll('[name]')
+                // console.log(Array.from(enableInputs))
+                // Array.from() convert thành 1 array, trả về các thẻ input chứa thuộc tính name
+                var formValues = Array.from(enableInputs).reduce(function(values,input){
+                    switch(input.type) {
+                        case'radio':
+                        // checked là pseudo class
+                            values[input.name] = formElement.querySelector('input[name="' + input.name +  '"]:checked').value   
+                            break;                              
+                        case'checkbox':
+                            if(!input.matches(':checked') && !values[input.name]){
+                                values[input.name] = ''
+                            }
+                            if(!input.matches(':checked')){
+                                return values;
+                            } 
+                            if(!Array.isArray(values[input.name])) {
+                                values[input.name] = []
+                            }
+                            values[input.name].push(input.value)
+                            break
+                        case 'file':
+                            values[input.name] = input.files;
+                            break
+                        default:
+                            values[input.name] = input.value 
+                    }
+                    console.log(values)
+                    return values
             },{})    
 
             // Gọi lại hàm onSubmit và trả về kèm giá trị của form
