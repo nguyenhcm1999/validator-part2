@@ -1,4 +1,12 @@
 function Validator(formSelector){
+    function getParent(element,selector) {
+        while (element.parentElement) {
+            if (element.parentElement.matches(selector)) {
+                return element.parentElement
+            }
+            element = element.parentElement
+        }
+    }
 
     var formRules = {}
     /*
@@ -90,9 +98,48 @@ function Validator(formSelector){
             // console.log(input)
     // rules là attribute tự định nghĩa ra không hợp lệ nên phải sử dụng phương thức getAttribute
             // formRules[input.name] = input.getAttribute('rules')
+
+
+            // Lắng nghe sự kiện để validate sự kiện blur, change, ...
+            input.onblur = handleValidate
+            input.oninput = handleClearError
         }
 
+        // Hàm thực hiện Validate
+        function handleValidate(event) {
+            var rules = formRules[event.target.name];
+            var errorMessage
+            for (var i in rules) {
+                console.log(rules)  
+                errorMessage = rules[i](event.target.value)
+            if (errorMessage) break;
+            }
+
+            if (errorMessage) {
+                var formGroup = getParent(event.target,'.form-group')
+                if (formGroup) {
+                    formGroup.classList.add('invalid')
+                    var formMessage = formGroup.querySelector('.form-message')
+                    if (formMessage) {
+                        formMessage.innerText = errorMessage
+                    }
+                }
+                console.log(formGroup)
+            }
+        }
         console.log(formRules)
 
+        // Hàm clear message lỗi
+        function handleClearError(event) {
+            var formGroup = getParent(event.target,'.form-group');
+            if (formGroup.classList.contains('invalid')) {
+                formGroup.classList.remove('invalid')
+
+                var formMessage = formGroup.querySelector('.form-message')
+                    if (formMessage) {
+                        formMessage.innerText = ''
+                    }
+            }
+        }
     }
 }
