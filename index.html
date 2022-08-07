@@ -42,11 +42,15 @@
     <script src="./validator.js"></script>
     <script>
         // 1. Mong muốn / Kỳ vọng / Thành quả đạt được ==> Output là gì?
-        Validator('#register-form',{
-            onSubmit: function (data) {
-                console.log(data)
-            }
-        });
+        // Validator('#register-form',{
+        //     onSubmit: function (data) {
+        //         console.log(data)
+        //     }
+        // });
+        var form = new Validator('#register-form');
+        form.onSubmit = function(formData) {
+            console.log(formData)
+        }
     </script>
 </body>
 </html>

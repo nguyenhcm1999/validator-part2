@@ -1,4 +1,6 @@
 function Validator(formSelector, options){
+
+    var _this = this;
     // Gán giá trị mặc định cho tham số khi định nghĩa (ES5)
     if(!options) {
         options = {}
@@ -120,6 +122,11 @@ function Validator(formSelector, options){
             if (errorMessage) break;
             }
 
+            // Hoặc for (var rule of rules) {
+            // errorMessage = rule(event.target.value)
+            // if (errorMessage) break;
+            // }
+
             if (errorMessage) {
                 var formGroup = getParent(event.target,'.form-group')
                 if (formGroup) {
@@ -150,9 +157,15 @@ function Validator(formSelector, options){
         }
     }
 
+    // console.log(this)
+
     // Xử lý hành vi submit form
     formElement.onsubmit = function (event) {
         event.preventDefault()
+
+        // console.log(_this)    
+
+        // this keyword
 
         var inputs = formElement.querySelectorAll('[name][rules]')
         var isValid = true
@@ -165,7 +178,7 @@ function Validator(formSelector, options){
         
         // Khi không có lỗi thì sumbit form
         if (isValid) {
-            if(typeof options.onSubmit === 'function') {
+            if(typeof _this.onSubmit === 'function') {
                 var enableInputs = formElement.querySelectorAll('[name]')
                 // console.log(Array.from(enableInputs))
                 // Array.from() convert thành 1 array, trả về các thẻ input chứa thuộc tính name
@@ -198,7 +211,7 @@ function Validator(formSelector, options){
             },{})    
 
             // Gọi lại hàm onSubmit và trả về kèm giá trị của form
-            options.onSubmit(formValues)
+            _this.onSubmit(formValues)
             } else {
                 formElement.submit()
             }
