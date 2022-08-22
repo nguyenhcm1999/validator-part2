@@ -55,6 +55,7 @@ function Validator(formSelector, options){
         console.log(key)
         console.log(validatorRules[key])
         console.log(validatorRules['required'])
+        console.log(validatorRules.required)
     }
 
 
